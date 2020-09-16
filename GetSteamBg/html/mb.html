@@ -1,0 +1,32 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>steamGB</title>
+		<script type="text/javascript" src="jq.js"></script>
+		<style>
+			div{float:left}
+		</style>
+	</head>
+	<body>
+		<div><button onclick="window.location.href=''+(parseInt(window.location.href.split('/')[window.location.href.split('/').length-1].split('.')[0])-1)+'.html'"><</button><button onclick="window.location.href=''+(parseInt(window.location.href.split('/')[window.location.href.split('/').length-1].split('.')[0])+1)+'.html'">></button></div>
+		<div id="all">
+			
+			
+		</div>
+		<div><button onclick="window.location.href=''+(parseInt(window.location.href.split('/')[window.location.href.split('/').length-1].split('.')[0])-1)+'.html'"><</button><button onclick="window.location.href=''+(parseInt(window.location.href.split('/')[window.location.href.split('/').length-1].split('.')[0])+1)+'.html'">></button></div>
+	</body>
+	<script language="javascript">
+		var dateJson=@@@@@@@@@@;
+		for(var i=0;i<dateJson.length;i++){
+			$("#all").append("<div><img src='"+dateJson[i].url+ "' ondblclick='click_(this)' onclick='click_(this)' ></br><button onclick='click_market(this)' markurl='"+ dateJson[i].marketurl +"'>市场查看</button></div>");
+		}
+		function click_(a) {
+			var imgurl=$(a).attr("src")
+			window.open(imgurl+"%202x"); 
+        } 
+		function click_market(a) {
+			var url=$(a).attr("markurl")
+			window.open(url); 
+        } 
+	</script>
+</html>
