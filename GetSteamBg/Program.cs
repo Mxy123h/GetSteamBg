@@ -17,6 +17,7 @@ namespace GetSteamBg
         {
             Console.WriteLine("PageNo:");
             string inputPageNo= Console.ReadLine();
+            inputPageNo= inputPageNo.Equals("") ? "0" : inputPageNo;
             for (int i= int.Parse(inputPageNo); i<2999;i++) {
                 int page = i*100;
                 string url = @"https://steamcommunity.com/market/search/render/?query=&start=" + page.ToString() + @"&count=100&search_descriptions=0&sort_column=name&sort_dir=asc&appid=753&category_753_Game%5B%5D=any&category_753_item_class%5B%5D=tag_item_class_3";
@@ -36,8 +37,8 @@ namespace GetSteamBg
         static string _Get(string url)
         {
             ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true;
-            WebProxy proxyObject = new WebProxy("http://127.0.0.1:7890/", true);
             var webClient = new WebClient();
+            WebProxy proxyObject = new WebProxy("http://127.0.0.1:7890/", true);//http代理 不需要请注释掉
             webClient.Proxy = proxyObject;
             string html = webClient.DownloadString(url);
             return html;
@@ -88,11 +89,11 @@ namespace GetSteamBg
         }
         static void _Replace(string pageNo,string json)
         {
-            StreamReader sr = new StreamReader("mb.html");
+            StreamReader sr = new StreamReader("html/mb.html");
             string temp_mb= sr.ReadToEnd();
             sr.Close();
             temp_mb=temp_mb.Replace("@@@@@@@@@@",json);
-            StreamWriter sw = new StreamWriter(pageNo + ".html");
+            StreamWriter sw = new StreamWriter("html/"+pageNo + ".html");
             sw.Write(temp_mb);
             sw.Close();
         }
