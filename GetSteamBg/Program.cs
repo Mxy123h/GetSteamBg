@@ -30,8 +30,13 @@ namespace GetSteamBg
                     webClient.Proxy = proxyObject;
                     Console.WriteLine($"设置http代理为{httpProxyUrl}");
                 }
-                Console.WriteLine($"正在从第{inputPageNo}页开始抓取");
-                for (int i = int.Parse(inputPageNo); i < 2999; i++)
+                
+                string retJson_ = _Get(@"https://steamcommunity.com/market/search/render/?query=&start=1&count=100&search_descriptions=0&sort_column=name&sort_dir=asc&appid=753&category_753_Game%5B%5D=any&category_753_item_class%5B%5D=tag_item_class_3");
+                dynamic dynamic_ = JsonConvert.DeserializeObject(retJson_);
+                double fullPageNo = int.Parse(dynamic_["total_count"].ToString()) / 100;
+                fullPageNo = Math.Round(fullPageNo, 0);
+                Console.WriteLine($"正在从第{inputPageNo}页开始抓取 共{fullPageNo}页");
+                for (int i = int.Parse(inputPageNo); i < fullPageNo; i++)
                 {
                     int page = i * 100;
                     string url = @"https://steamcommunity.com/market/search/render/?query=&start=" + page.ToString() + @"&count=100&search_descriptions=0&sort_column=name&sort_dir=asc&appid=753&category_753_Game%5B%5D=any&category_753_item_class%5B%5D=tag_item_class_3";
@@ -41,20 +46,20 @@ namespace GetSteamBg
                     string json = _GetBgHtml(bgHtml);
                     _Replace(i.ToString(), json);
                     Console.WriteLine($"第{i}页抓取完成");
-                    Thread.Sleep(10000);
+                    Thread.Sleep(15000);
                 }
             }
             catch (MyException ex)
             {
 
-                Console.WriteLine(ex.MyMessage+"   详细: "+ ex.Message);
+                Console.WriteLine(ex.MyMessage + "   详细: " + ex.Message);
             }
             catch (Exception ex)
             {
 
                 Console.WriteLine(ex.Message);
             }
-            
+
 
             while (true)
             {
@@ -71,7 +76,7 @@ namespace GetSteamBg
             }
             catch (Exception ex)
             {
-                throw new MyException("十有八九网不通",ex.Message);
+                throw new MyException("十有八九网不通", ex.Message);
             }
         }
 
