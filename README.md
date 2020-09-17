@@ -5,11 +5,12 @@
 2. 在下载 https://github.com/Mxy123h/GetSteamBg/releases
 3. 双击GetSteamBg.exe
 ---
+
 ### linux
-先安装.NetCore3
+先安装.NetCore3 演示为debian
 ```
 wget https://packages.microsoft.com/config/debian/10/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
-sudo dpkg -i packages-microsoft-prod.deb
+dpkg -i packages-microsoft-prod.deb
 apt-get update
 apt-get install -y apt-transport-https
 apt-get update
@@ -17,5 +18,6 @@ apt-get install -y dotnet-sdk-3.1
 ```
 下载解压
 运行 `dotnet GetSteamBg.dll`
+
 ---
 爬好的在html文件夹里
