@@ -19,9 +19,14 @@ namespace GetSteamBg
         {
             try
             {
-                Console.WriteLine("PageNo: 按回车默认为0");
+                #region 设置开始页数
+                Console.WriteLine("设置开始页数: 按回车默认为0");
                 string inputPageNo = Console.ReadLine();
                 inputPageNo = inputPageNo.Equals("") ? "0" : inputPageNo;
+                Console.WriteLine($"设置开始页数为{inputPageNo}");
+                #endregion
+                Console.WriteLine("==========================================================");
+                #region 设置代理
                 Console.WriteLine("设置http代理 例:http://127.0.0.1:1080/  不设置直接按回车");
                 string httpProxyUrl = Console.ReadLine();
                 if (!httpProxyUrl.Equals(""))
@@ -30,12 +35,27 @@ namespace GetSteamBg
                     webClient.Proxy = proxyObject;
                     Console.WriteLine($"设置http代理为{httpProxyUrl}");
                 }
-                
+                else { Console.WriteLine($"无设置http代理"); }
+                #endregion
+                Console.WriteLine("==========================================================");
+                #region 设置爬取延迟
+                Console.WriteLine($"设置爬取等待延迟: 按回车默认为10000ms");
+                int getWait = 10000;
+                string inputGetWait = Console.ReadLine();
+                getWait = inputGetWait.Equals("") ? getWait : int.Parse(inputGetWait);
+                Console.WriteLine($"爬取等待延迟为{getWait}");
+                #endregion
+                Console.WriteLine("==========================================================");
+                #region 获取总页数
                 string retJson_ = _Get(@"https://steamcommunity.com/market/search/render/?query=&start=1&count=100&search_descriptions=0&sort_column=name&sort_dir=asc&appid=753&category_753_Game%5B%5D=any&category_753_item_class%5B%5D=tag_item_class_3");
                 dynamic dynamic_ = JsonConvert.DeserializeObject(retJson_);
                 double fullPageNo = int.Parse(dynamic_["total_count"].ToString()) / 100;
                 fullPageNo = Math.Round(fullPageNo, 0);
+                #endregion
+
                 Console.WriteLine($"正在从第{inputPageNo}页开始抓取 共{fullPageNo}页");
+
+                #region 循环爬取
                 for (int i = int.Parse(inputPageNo); i < fullPageNo; i++)
                 {
                     int page = i * 100;
@@ -46,8 +66,9 @@ namespace GetSteamBg
                     string json = _GetBgHtml(bgHtml);
                     _Replace(i.ToString(), json);
                     Console.WriteLine($"第{i}页抓取完成");
-                    Thread.Sleep(15000);
+                    Thread.Sleep(getWait);
                 }
+                #endregion
             }
             catch (MyException ex)
             {
