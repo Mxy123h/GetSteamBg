@@ -56,7 +56,7 @@ namespace GetSteamBg
                 Console.WriteLine($"正在从第{inputPageNo}页开始抓取 共{fullPageNo}页");
 
                 #region 循环爬取
-                for (int i = int.Parse(inputPageNo); i < fullPageNo; i++)
+                for (int i = int.Parse(inputPageNo); i < fullPageNo+1; i++)
                 {
                     int page = i * 100;
                     string url = @"https://steamcommunity.com/market/search/render/?query=&start=" + page.ToString() + @"&count=100&search_descriptions=0&sort_column=name&sort_dir=asc&appid=753&category_753_Game%5B%5D=any&category_753_item_class%5B%5D=tag_item_class_3";
